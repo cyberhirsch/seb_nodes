@@ -1,0 +1,14 @@
+[project]
+name = "seb_nodes"
+description = "Save image node with dynamic paths and an 'Open Folder' button."
+version = "1.0.0"
+license = {file = "LICENSE"}
+
+[project.urls]
+Repository = "https://github.com/cyberhirsch/seb_nodes"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "seb_nodes"
+Icon = ""
