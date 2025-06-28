@@ -7,7 +7,7 @@ A suite of essential utilities for ComfyUI by Seb (cyberhirsch), designed to str
 ## 📋 Table of Contents
 
 - [🚀 Installation](#-installation)
-- [📦 The Nodes: A Workflow Approach](#-the-nodes-a-workflow-approach)
+- [📦 The Nodes](#-the-nodes)
   - [1. Aspect Ratio (Seb)](#1-aspect-ratio-seb)
   - [2. Unified Prompter (Seb)](#2-unified-prompter-seb)
   - [3. Switch Mask (Seb)](#3-switch-mask-seb)
@@ -40,7 +40,7 @@ A suite of essential utilities for ComfyUI by Seb (cyberhirsch), designed to str
 
 ---
 
-## 📦 The Nodes: A Workflow Approach
+## 📦 The Nodes
 
 This collection is designed to work together to solve common workflow challenges.
 
