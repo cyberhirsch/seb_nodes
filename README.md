@@ -1,119 +1,243 @@
 # Seb Nodes for ComfyUI
 
-A collection of custom nodes for ComfyUI by Seb (cyberhirsch), enhancing image saving and mask manipulation workflows.
-
-**Current Nodes:**
-1.  **Save Image (Seb)**: Advanced image saving with dynamic paths and an "Open Folder" button.
-2.  **Switch Mask (Seb)**: Selects a mask based on image aspect ratio from multiple inputs.
+A suite of essential utilities for ComfyUI by Seb (cyberhirsch), designed to streamline your creative process from initial setup to final output.
 
 ---
 
-## 1. Save Image (Seb)
+## 📋 Table of Contents
 
-Provides more control over image saving, including dynamic subfolder creation and a convenient button to open the last used output folder directly from the UI.
+- [🚀 Installation](#-installation)
+- [📦 The Nodes: A Workflow Approach](#-the-nodes-a-workflow-approach)
+  - [1. Aspect Ratio (Seb)](#1-aspect-ratio-seb)
+   Nodes for ComfyUI
 
-### Features (Save Image (Seb))
-
-*   **Custom Base Output Folder**: Specify any root directory for your saves (defaults to ComfyUI's output).
-*   **Dynamic Subfolder Creation**: Use patterns like `%date:yyyy-MM-dd%` in the `subfolder_pattern` input to automatically organize saves (e.g., into daily folders). Leave blank to save directly to the base folder.
-*   **Flexible Filename Generation**:
-    *   Set a core filename component (`filename_core`).
-    *   Choose a separator (`filename_separator`).
-    *   Optionally include a high-resolution timestamp (`include_timestamp_in_filename`).
-    *   Configurable counter padding (`counter_digits`).
-    *   Batch index automatically added for batches (`_b00`, `_b01`, etc.).
-*   **Save Workflow Data**: Option to embed the full workflow JSON into the saved PNG metadata.
-*   **Overwrite Option**: Choose whether to overwrite existing files or always generate a unique filename using the counter.
-*   **✨ Open Last Seb Output Folder Button ✨**: Quickly navigate to the folder where this node last saved images directly from the ComfyUI interface (opens on the server machine).
-
-### Usage / Node Inputs (Save Image (Seb))
-
-*   **`images`**: Connect the image output from another node here.
-*   **`base_output_folder`**: The root directory for saving. Can be absolute (e.g., `D:\ComfyOutput`) or relative (e.g., `MySaves`, which will be inside `ComfyUI/output/MySaves`).
-*   **`subfolder_pattern`**: Defines the subfolder structure within the base folder.
-    *   Use patterns like `%date:yyyy-MM-dd%`, `%date:yyyyMM%`, etc.
-    *   Example: `ProjectX/%date:yyyy-MM-dd%` creates `D:\ComfyOutput\ProjectX\2025-05-06\`.
-    *   Leave blank to save directly into `base_output_folder`.
-    *   Default: `ComfyUI_Seb/%date:yyyy-MM-dd%`
-*   **`filename_core`**: The main text part of the filename (e.g., "CharacterPortrait"). Default: `Image_Seb`.
-*   **`filename_separator`**: Character used to join filename parts (e.g., `_` or `-`).
-*   **`include_timestamp_in_filename`**: (Toggle) If enabled, adds a detailed timestamp (YYYYMMDDHHMMSSms) to the filename for uniqueness.
-*   **`counter_digits`**: Number of digits for the counter (e.g., 5 results in `00001`, `00002`).
-*   **`save_workflow_data`**: (Toggle) If enabled, embeds the workflow JSON into the PNG metadata.
-*   **`overwrite_existing`**: (Toggle) If enabled, may overwrite files if the generated name exists (primarily affects the first image in a potential batch). If disabled (default), it guarantees a unique filename by incrementing the counter.
-*   **`Open Last Seb Output Folder` (Button)**: Click this after a successful save to open the directory where the files were saved. **Note:** This opens the folder on the computer running the ComfyUI server backend.
+A suite of essential utilities for ComfyUI by Seb (cyberhirsch), designed to streamline your creative process from initial setup to final output.
 
 ---
 
-## 2. Switch Mask (Seb)
+## 📋 Table of Contents
 
-Selects a mask from a set of provided mask inputs based on which predefined common aspect ratio is closest to the input image's aspect ratio. If no mask is provided for the closest AR, no mask is output.
-
-![Placeholder - Add Screenshot of Switch Mask (Seb) Node Here](placeholder_switch_mask_seb.png)
-*(Replace `placeholder_switch_mask_seb.png` with an actual screenshot)*
-
-### Features (Switch Mask (Seb))
-
-*   **Aspect Ratio Detection**: Calculates the aspect ratio of the input `image`.
-*   **Nearest Match**: Compares the image's AR to a predefined list of common aspect ratios:
-    *   21:9, 16:9, 3:2, 4:3, 1:1, 3:4, 2:3, 9:16
-*   **Conditional Mask Output**:
-    *   Outputs the mask connected to the input slot corresponding to the closest detected AR.
-    *   If the specific mask input for the matched AR is not connected, it outputs `None` (no mask).
-*   **Label Output**: Outputs a string indicating the `detected_ar_label` (e.g., "16:9", "1:1").
-
-### Usage / Node Inputs & Outputs (Switch Mask (Seb))
-
-**Inputs:**
-*   **`image`**: (Required) The IMAGE tensor to analyze for aspect ratio.
-*   **`mask_21_9`**: (Optional) MASK input for 21:9 aspect ratio.
-*   **`mask_16_9`**: (Optional) MASK input for 16:9 aspect ratio.
-*   **`mask_3_2`**: (Optional) MASK input for 3:2 aspect ratio.
-*   **`mask_4_3`**: (Optional) MASK input for 4:3 aspect ratio.
-*   **`mask_1_1`**: (Optional) MASK input for 1:1 aspect ratio.
-*   **`mask_3_4`**: (Optional) MASK input for 3:4 aspect ratio.
-*   **`mask_2_3`**: (Optional) MASK input for 2:3 aspect ratio.
-*   **`mask_9_16`**: (Optional) MASK input for 9:16 aspect ratio.
-
-**Outputs:**
-*   **`selected_mask`**: The MASK tensor corresponding to the detected aspect ratio, or `None` if no matching mask input was provided.
-*   **`detected_ar_label`**: A STRING indicating the label of the closest aspect ratio (e.g., "16:9", "Error: Invalid Image").
+- [🚀 Installation](#-installation)
+- [📦 The Nodes: A Workflow Approach](#-the-nodes-a-workflow-approach)
+  - [1. Aspect Ratio (Seb)](#1-aspect-ratio-seb)
+  - [2. Unified Prompter (Seb)](#2-unified-prompter-seb)
+  - [3. Switch Mask (Seb)](#3-switch-mask-seb)
+  - [4. Save Image (Seb)](#4-save-image-seb)
+- [📄 License](#-license)
 
 ---
 
-## Installation (for Seb Nodes package)
+## 🚀 Installation
 
-**Recommended: Using ComfyUI-Manager**
+### Recommended: Using ComfyUI-Manager
 
-1.  Install [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager).
-2.  Open ComfyUI and click the "Manager" button.
-3.  Click "Install Custom Nodes".
-4.  Search for "**Seb Nodes**" (or "cyberhirsch" if that's how it's listed due to your GitHub username).
-5.  Click "Install" on the "Seb Nodes" package.
+1.  If you haven't already, install the [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager).
+2.  In your ComfyUI interface, click the **Manager** button.
+3.  Click **Install Custom Nodes**.
+4.  Search for `Seb Nodes` or `cyberhirsch`.
+5.  Click the **Install** button next to the package.
 6.  **Restart ComfyUI** completely.
 
-**Manual Installation**
+### Manual Installation
 
-1.  Navigate to your ComfyUI installation directory (e.g., `G:\AI\ComfyUI_windows_portable\ComfyUI\`).
-2.  Go into the `custom_nodes` subfolder.
-3.  Open a terminal/command prompt in this directory.
-4.  Clone your repository:
+1.  Navigate to your ComfyUI installation directory.
+2.  Enter the `custom_nodes` subfolder (e.g., `ComfyUI/custom_nodes/`).
+3.  Open a terminal or command prompt in this directory.
+4.  Clone the repository:
     ```bash
-    git clone https://github.com/cyberhirsch/seb_nodes.git seb_nodes
+    git clone https://github.com/cyberhirsch/seb_nodes.git
     ```
-    *(Assuming your GitHub username is `cyberhirsch` and repository is `seb_nodes`. Adjust if different. Cloning into a folder named `seb_nodes` ensures it matches the package name.)*
-5.  **Restart ComfyUI** completely. The nodes should appear under their respective categories ("image/save" and "mask/util/Seb").
+5.  **Restart ComfyUI** completely.
 
-## General Notes & Limitations
+---
 
-*   The **"Open Last Seb Output Folder"** button on the `Save Image (Seb)` node executes the command on the **server machine** where the Python backend is running. If you are accessing ComfyUI remotely via a web browser, it will open the folder on the server, not your local client machine.
-*   If you update the node's Python code (especially changing `INPUT_TYPES`), you may encounter UI display glitches in existing workflows using these nodes. The best fix is usually to delete the old node instance and add a new one to your workflow.
+## 📦 The Nodes: A Workflow Approach
 
-## Dependencies
+This collection is designed to work together to solve common workflow challenges.
 
-*   Requires a standard ComfyUI installation.
-*   No additional external Python packages are needed for these nodes.
+### 1. Aspect Ratio (Seb)
 
-## License
+**(Category: `utils/aspect_ratio`)**
 
-*   MIT License 
+Stop guessing your dimensions. This node intelligently calculates `width` and `height` for you, ensuring your images are perfectly sized and compatible with your models.
+
+![Screenshot of the Aspect Ratio (Seb) node](screenshots/Aspect%20Ratio.png)
+
+#### Key Features
+
+*   **Preset Library**: A logically sorted list of common aspect ratios, from tall portrait (`9:16`) to cinematic widescreen (`21:9`).
+*   **Intelligent Sizing Modes**:
+    *   **Megapixels**: Set a target image complexity (e.g., `1.0` for a ~1MP image) and let the node handle the math across different shapes.
+    *   **Fixed Side**: Lock in a specific width or height, and the node calculates the other dimension to match your chosen ratio.
+*   **Dynamic UI**: The interface smartly hides irrelevant options to reduce clutter.
+*   **Model-Safe Output**: A `multiple_of` setting ensures your final dimensions are divisible by a required number (like 8), preventing model errors.
+
+> **Pro-Tip:** Use **Megapixels** mode when experimenting with different aspect ratios. It keeps your VRAM usage and generation time consistent, allowing for fairer comparisons between compositions.
+
+### 2. Unified Prompter (Seb)
+
+**(Category: `utils/prompting`)**
+
+Build complex, high-quality prompts with an organized, modular system. This node replaces dozens of text boxes with a clean, dropdown-based interface powered by a simple, external JSON file.
+
+![Screenshot of the Unified Prompter (Seb) node](screenshots/Unified%20Prompter.png)
+
+#### Key Features
+
+*   **External JSON Stylesheet**: All dropdown options are loaded from `unified_prompter_styles.json`. Add, edit, and share entire prompt libraries without ever touching the code.
+*   **Categorized Modifiers**: Organize your prompt fragments into logical groups like `technique`, `composition`, `lighting`, and `artist`.
+*   **Creative Roulette**: Every positive prompt category includes a **"Random"** option. Let the node surprise you with new style combinations to break creative blocks.
+*   **Multi-Layered Negatives**: Stack up to three negative prompt presets (e.g., a base negative, a model-specific one, and an aesthetic filter) for fine-tuned control.
+*   **Transparent Output**: Outputs the final text prompts as strings, so you can preview exactly what's being sent to the sampler.
+
+> **Pro-Tip:** Create different style files for different themes (e.g., `scifi_styles.json`, `fantasy_styles.json`). Before starting ComfyUI, just rename the one you want to use to `unified_prompter_styles.json`.
+
+### 3. Switch Mask (Seb)
+
+**(Category: `mask/util/Seb`)**
+
+Automate your masking process for any image shape. This node receives an image and selects the most appropriate mask from a set of eight aspect-ratio-specific inputs.
+
+![Screenshot of the Switch Mask (Seb) node](screenshots/Switch%20Mask.png)
+
+#### Key Features
+
+*   **Dynamic Mask Selection**: Automatically detects the incoming image's aspect ratio and outputs the mask from the corresponding input slot.
+*   **Failsafe Design**: If no mask is connected to the input that best matches the image, the node outputs nothing, preventing errors in your workflow.
+*   **Clear Feedback**: Outputs a text label of the detected aspect ratio (e.g., "16:9") for verification.
+
+> **Example Workflow:** Combine this with a 'Vignette' or 'Blur' node. Create masks for 16:9, 1:1, and 9:16, and connect them to the respective inputs. This node will now automatically apply the correct vignette to any image, making your post-processing workflow universal.
+
+### 4. Save Image (Seb)
+
+**(Category: `image/save`)**
+
+Take full control of your file organization and naming. This node is a super-powered replacement for the default save functionality.
+
+![Screenshot of the Save Image (Seb) node](screenshots/Save%20Image.png)
+
+#### Key Features
+
+*   **Granular File Naming**: Construct filenames with a core component, a separator, an optional timestamp, and an automatic batch counter.
+*   **Dynamic Folder Sorting**: Use date and time patterns (e.g., `%date:yyyy-MM-dd%`) to automatically sort your images into a clean folder structure.
+*   **Instant Access Button**: Includes an **"Open Last Output Folder"** button directly on the node to immediately navigate to where your files were saved.
+*   **Metadata Control**: Choose whether to embed the full ComfyUI workflow into the saved PNG file.
+
+> **Pro-Tip:** The `filename_core` input can be connected to the output of other nodes. For example,- [2. Unified Prompter (Seb)](#2-unified-prompter-seb)
+  - [3. Switch Mask (Seb)](#3-switch-mask-seb)
+  - [4. Save Image (Seb)](#4-save-image-seb)
+- [📄 License](#-license)
+
+---
+
+## 🚀 Installation
+
+### Recommended: Using ComfyUI-Manager
+
+1.  If you haven't already, install the [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager).
+2.  In your ComfyUI interface, click the **Manager** button.
+3.  Click **Install Custom Nodes**.
+4.  Search for `Seb Nodes` or `cyberhirsch`.
+5.  Click the **Install** button next to the package.
+6.  **Restart ComfyUI** completely.
+
+### Manual Installation
+
+1.  Navigate to your ComfyUI installation directory.
+2.  Enter the `custom_nodes` subfolder (e.g., `ComfyUI/custom_nodes/`).
+3.  Open a terminal or command prompt in this directory.
+4.  Clone the repository:
+    ```bash
+    git clone https://github.com/cyberhirsch/seb_nodes.git
+    ```
+5.  **Restart ComfyUI** completely.
+
+---
+
+## 📦 The Nodes: A Workflow Approach
+
+This collection is designed to work together to solve common workflow challenges.
+
+### 1. Aspect Ratio (Seb)
+
+**(Category: `utils/aspect_ratio`)**
+
+Stop guessing your dimensions. This node intelligently calculates `width` and `height` for you, ensuring your images are perfectly sized and compatible with your models.
+
+![Screenshot of the Aspect Ratio node](screenshots/Aspect%20Ratio.png)
+
+#### Key Features
+
+*   **Preset Library**: A logically sorted list of common aspect ratios, from tall portrait (`9:16`) to cinematic widescreen (`21:9`).
+*   **Intelligent Sizing Modes**:
+    *   **Megapixels**: Set a target image complexity (e.g., `1.0` for a ~1MP image) and let the node handle the math across different shapes.
+    *   **Fixed Side**: Lock in a specific width or height, and the node calculates the other dimension to match your chosen ratio.
+*   **Dynamic UI**: The interface smartly hides irrelevant options to reduce clutter.
+*   **Model-Safe Output**: A `multiple_of` setting ensures your final dimensions are divisible by a required number (like 8), preventing model errors.
+
+> **Pro-Tip:** Use **Megapixels** mode when experimenting with different aspect ratios. It keeps your VRAM usage and generation time consistent, allowing for fairer comparisons between compositions.
+
+### 2. Unified Prompter (Seb)
+
+**(Category: `utils/prompting`)**
+
+Build complex, high-quality prompts with an organized, modular system. This node replaces dozens of text boxes with a clean, dropdown-based interface powered by a simple, external JSON file.
+
+![Screenshot of the Unified Prompter node](screenshots/Unified%20Prompter.png)
+
+#### Key Features
+
+*   **External JSON Stylesheet**: All dropdown options are loaded from `unified_prompter_styles.json`. Add, edit, and share entire prompt libraries without ever touching the code.
+*   **Categorized Modifiers**: Organize your prompt fragments into logical groups like `technique`, `composition`, `lighting`, and `artist`.
+*   **Creative Roulette**: Every positive prompt category includes a **"Random"** option. Let the node surprise you with new style combinations to break creative blocks.
+*   **Multi-Layered Negatives**: Stack up to three negative prompt presets (e.g., a base negative, a model-specific one, and an aesthetic filter) for fine-tuned control.
+*   **Transparent Output**: Outputs the final text prompts as strings, so you can preview exactly what's being sent to the sampler.
+
+> **Pro-Tip:** Create different style files for different themes (e.g., `scifi_styles.json`, `fantasy_styles.json`). Before starting ComfyUI, just rename the one you want to use to `unified_prompter_styles.json`.
+
+### 3. Switch Mask (Seb)
+
+**(Category: `mask/util/Seb`)**
+
+Automate your masking process for any image shape. This node receives an image and selects the most appropriate mask from a set of eight aspect-ratio-specific inputs.
+
+![Screenshot of the Switch Mask node](screenshots/Switch%20Mask.png)
+
+#### Key Features
+
+*   **Dynamic Mask Selection**: Automatically detects the incoming image's aspect ratio and outputs the mask from the corresponding input slot.
+*   **Failsafe Design**: If no mask is connected to the input that best matches the image, the node outputs nothing, preventing errors in your workflow.
+*   **Clear Feedback**: Outputs a text label of the detected aspect ratio (e.g., "16:9") for verification.
+
+> **Example Workflow:** Combine this with a 'Vignette' or 'Blur' node. Create masks for 16:9, 1:1, and 9:16, and connect them to the respective inputs. This node will now automatically apply the correct vignette to any image, making your post-processing workflow universal.
+
+### 4. Save Image (Seb)
+
+**(Category: `image/save`)**
+
+Take full control of your file organization and naming. This node is a super-powered replacement for the default save functionality.
+
+![Screenshot of the Save Image node](screenshots/Save%20Image.png)
+
+#### Key Features
+
+*   **Granular File Naming**: Construct filenames with a core component, a separator, an optional timestamp, and an automatic batch counter.
+*   **Dynamic Folder Sorting**: Use date and time patterns (e.g., `%date:yyyy-MM-dd%`) to automatically sort your images into a clean folder structure.
+*   **Instant Access Button**: Includes an **"Open Last Output Folder"** button directly on the node to immediately navigate to where your files were saved.
+*   **Metadata Control**: Choose whether to embed the full ComfyUI workflow into the saved PNG file.
+
+> **Pro-Tip:** The `filename_core` input can be connected to the output of other nodes. For example, connect the `seed` number from a "Primitive" node to include the seed directly in every filename.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+``` connect the `seed` number from a "Primitive" node to include the seed directly in every filename.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
