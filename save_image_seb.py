@@ -1,4 +1,4 @@
-# File: G:/AI/ComfyUI_windows_portable/ComfyUI/custom_nodes/seb_nodes/save_image_seb.py
+# G:/AI/ComfyUI_windows_portable/ComfyUI/custom_nodes/seb_nodes/save_image_seb.py
 import os
 import datetime
 import shutil
@@ -12,6 +12,7 @@ import numpy as np
 import json
 import re
 import traceback
+import asyncio
 
 LAST_SAVED_TO_FOLDER_SEB = None
 
@@ -49,9 +50,13 @@ class SaveImageSeb:
             return server.PromptServer.instance.json_response(
                 {"status": "error", "message": f"Folder path not set or invalid for SaveImageSeb: {path_to_open}"}, status=404)
         try:
-            if sys.platform == "win32": os.startfile(path_to_open)
-            elif sys.platform == "darwin": subprocess.Popen(["open", path_to_open])
-            else: subprocess.Popen(["xdg-open", path_to_open])
+            loop = asyncio.get_event_loop()
+            if sys.platform == "win32":
+                await loop.run_in_executor(None, os.startfile, path_to_open)
+            elif sys.platform == "darwin":
+                await loop.run_in_executor(None, lambda: subprocess.Popen(["open", path_to_open]))
+            else:
+                await loop.run_in_executor(None, lambda: subprocess.Popen(["xdg-open", path_to_open]))
             return server.PromptServer.instance.json_response({"status": "opened", "path": path_to_open})
         except Exception as e:
             print(f"[SaveImageSeb] Error opening folder: {e}\n{traceback.format_exc()}")
@@ -193,4 +198,6 @@ class SaveImageSeb:
                 results_for_ui.append({"filename": os.path.basename(full_file_path), "subfolder": subfolder_for_ui, "type": "output"})
         
         if results_for_ui: return {"ui": {"images": results_for_ui}}
+        
+        # --- THIS IS THE CORRECTED LINE ---
         return {"ui": {"text": [f"Saved {len(images)} to: {current_output_path}. No previews if outside ComfyUI output." ]}}
