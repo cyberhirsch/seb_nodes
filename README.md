@@ -23,7 +23,7 @@ A suite of essential utilities for ComfyUI by Seb (cyberhirsch), designed to str
 1.  If you haven't already, install the [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager).
 2.  In your ComfyUI interface, click the **Manager** button.
 3.  Click **Install Custom Nodes**.
-4.  Search for `Seb Nodes` or `cyberhirsch`.
+4.  Search for `Seb`.
 5.  Click the **Install** button next to the package.
 6.  **Restart ComfyUI** completely.
 
