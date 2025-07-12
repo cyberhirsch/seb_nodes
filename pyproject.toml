@@ -9,6 +9,6 @@ Repository = "https://github.com/cyberhirsch/seb_nodes"
 #  Used by Comfy Registry https://comfyregistry.org
 
 [tool.comfy]
-PublisherId = ""
+PublisherId = "@cyberhirsch"
 DisplayName = "seb_nodes"
 Icon = ""
