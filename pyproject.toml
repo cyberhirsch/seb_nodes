@@ -1,6 +1,6 @@
 [project]
 name = "seb_nodes"
-description = "Save image node with dynamic paths and an 'Open Folder' button."
+description = "Seb's Custom Nodes: Loaded SwitchMasks, SaveImage, AspectRatio, UnifiedPrompter, Switch & DepthInpaint."
 version = "1.0.0"
 license = {file = "LICENSE"}
 
