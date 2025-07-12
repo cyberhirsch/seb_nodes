@@ -1,7 +1,7 @@
 [project]
 name = "seb_nodes"
 description = "Seb's Custom Nodes: Loaded SwitchMasks, SaveImage, AspectRatio, UnifiedPrompter, Switch & DepthInpaint."
-version = "1.0.1"
+version = "1.0.2"
 license = {file = "LICENSE"}
 
 [project.urls]
