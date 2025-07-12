@@ -1,0 +1,4 @@
+opencv-python==4.9.0.80
+networkx==3.2.1
+scikit-image==0.22.0
+cynetworkx==2.6
