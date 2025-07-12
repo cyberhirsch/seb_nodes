@@ -10,10 +10,9 @@ import cv2
 Mesh = namedtuple("Mesh", ["vertices", "colors", "faces"])
 
 # --- Dependency Imports ---
-# This correctly imports from the 'depth_inpaint_seb' sub-folder
-from .depth_inpaint_seb.networks import Inpaint_Color_Net, Inpaint_Depth_Net, Inpaint_Edge_Net
-from .depth_inpaint_seb.mesh import create_mesh, tear_edges, generate_init_node, group_edges, reassign_floating_island, update_status, remove_dangling, fill_missing_node, enlarge_border, fill_dummy_bord, context_and_holes, DL_inpaint_edge, generate_face, reproject_3d_int_detail
-from .depth_inpaint_seb.bilateral_filtering import sparse_bilateral_filtering
+from .dependencies.networks import Inpaint_Color_Net, Inpaint_Depth_Net, Inpaint_Edge_Net
+from .dependencies.mesh import create_mesh, tear_edges, generate_init_node, group_edges, reassign_floating_island, update_status, remove_dangling, fill_missing_node, enlarge_border, fill_dummy_bord, context_and_holes, DL_inpaint_edge, generate_face, reproject_3d_int_detail
+from .dependencies.bilateral_filtering import sparse_bilateral_filtering
 
 # --- Helper Functions ---
 def tensor_to_np(tensor):
@@ -29,8 +28,12 @@ def generate_mesh_data_seb(image_bgr, depth, int_mtx, config, rgb_model, depth_e
     """
     depth = depth.astype(np.float64)
     
-    input_mesh, _, image_bgr, depth = create_mesh(depth, image_bgr, int_mtx, config)
-    input_mesh = tear_edges(input_mesh, config['depth_threshold'], None)
+    # --- FIX IS HERE: Capture the xy2depth dictionary ---
+    input_mesh, xy2depth, image_bgr, depth = create_mesh(depth, image_bgr, int_mtx, config)
+    # And pass it to tear_edges
+    input_mesh = tear_edges(input_mesh, config['depth_threshold'], xy2depth)
+    # --- END FIX ---
+    
     input_mesh, info_on_pix = generate_init_node(input_mesh, config, min_node_in_cc=200)
 
     edge_ccs, input_mesh, edge_mesh = group_edges(input_mesh, config, image_bgr, remove_conflict_ordinal=False)
@@ -55,7 +58,7 @@ def generate_mesh_data_seb(image_bgr, depth, int_mtx, config, rgb_model, depth_e
                                                                  extend_erode_context_ccs, mask_ccs, [],
                                                                  edge_ccs, extend_edge_ccs, None, edge_maps,
                                                                  rgb_model, depth_edge_model, None,
-                                                                 depth_feat_model, inpaint_iter=0)
+                                                                 depth_feat_model, specific_edge_id=[], inpaint_iter=0)
     
     vertex_id, verts_list, colors_list = 0, [], []
     k_00, k_02, k_11, k_12 = input_mesh.graph['cam_param_pix_inv'][0, 0], input_mesh.graph['cam_param_pix_inv'][0, 2], input_mesh.graph['cam_param_pix_inv'][1, 1], input_mesh.graph['cam_param_pix_inv'][1, 2]
@@ -88,6 +91,7 @@ class DepthInpaintSeb:
     def INPUT_TYPES(cls):
         return {"required": {
                 "image": ("IMAGE",), "depth_image": ("IMAGE",),
+                "device": (["auto", "cpu", "gpu"],), # <-- CHANGE: Added device selector
                 "depth_threshold": ("FLOAT", {"default": 0.04, "min": 0.0, "max": 0.2, "step": 0.001}),
                 "extrapolate_border": ("BOOLEAN", {"default": True}),
                 "extrapolation_thickness": ("INT", {"default": 60, "min": 0, "max": 200, "step": 1}),
@@ -99,14 +103,32 @@ class DepthInpaintSeb:
     FUNCTION = "generate"
     CATEGORY = "Seb/3D"
 
-    def generate(self, image, depth_image, depth_threshold, extrapolate_border, extrapolation_thickness, background_thickness, redundant_number):
+    def generate(self, image, depth_image, device, depth_threshold, extrapolate_border, extrapolation_thickness, background_thickness, redundant_number):
+        
         image_np_bgr = tensor_to_np(image)
-        depth_np_gray = tensor_to_np(depth_image)
+        depth_np_from_tensor = tensor_to_np(depth_image)
+
+        if depth_np_from_tensor.ndim == 3:
+            depth_np_gray = cv2.cvtColor(depth_np_from_tensor, cv2.COLOR_BGR2GRAY)
+        else:
+            depth_np_gray = depth_np_from_tensor
         
         depth_np = 1.0 / (depth_np_gray / 255.0 * 10.0 + 0.05)
         depth_np = cv2.resize(depth_np, (image_np_bgr.shape[1], image_np_bgr.shape[0]), interpolation=cv2.INTER_AREA)
 
-        device = "cuda" if torch.cuda.is_available() else "cpu"
+        # --- CHANGE: Device selection logic ---
+        if device == "auto":
+            if torch.cuda.is_available():
+                device = "cuda"
+            else:
+                device = "cpu"
+        
+        if device == "cpu":
+            print("[DepthInpaintSeb] Warning: Forcing CPU processing. This will be very slow.")
+        
+        print(f"[DepthInpaintSeb] Using device: {device}")
+        # --- END CHANGE ---
+
         config = {
             'depth_threshold': depth_threshold, 'extrapolate_border': extrapolate_border, 'extrapolation_thickness': extrapolation_thickness, 
             'background_thickness': background_thickness, 'redundant_number': redundant_number, 'context_thickness': 140, 

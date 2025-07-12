@@ -15,7 +15,7 @@ NODE_CLASS_MAPPINGS = {
     "AspectRatioSeb": AspectRatioSeb,
     "UnifiedPrompterSeb": UnifiedPrompterSeb,
     "SwitchSeb": SwitchSeb,
-    "DepthInpaintSeb": DepthInpaintSeb,
+    "DepthInpaintSeb": DepthInpaintSeb
 }
 
 # Map the internal class names to the names in the UI
@@ -25,7 +25,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "AspectRatioSeb": "Aspect Ratio (Seb)",
     "UnifiedPrompterSeb": "Unified Prompter (Seb)",
     "SwitchSeb": "Switch (Seb)",
-    "DepthInpaintSeb": "Depth Inpaint (Seb)", 
+    "DepthInpaintSeb": "Depth Inpaint (Seb)" 
 }
 
 # This tells ComfyUI to look for JS files in a 'js' sub-folder
