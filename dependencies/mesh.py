@@ -7,7 +7,10 @@ except ImportError:
     import networkx as netx
 """
 import networkx as netx
-import matplotlib.pyplot as plt
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    plt = None
 from functools import partial
 #from vispy import scene, io
 #from vispy.scene import visuals
@@ -2546,3 +2549,4 @@ def output_3d_photo(verts, colors, faces, Height, Width, hFov, vFov, tgt_poses, 
         clip.write_videofile(fn, fps=config['fps'])
 
     return normal_canvas, all_canvas, fn_saved
+
