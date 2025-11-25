@@ -1,4 +1,34 @@
-﻿# File: G:/AI/ComfyUI_windows_portable/ComfyUI/custom_nodes/seb_nodes/__init__.py
+import importlib.util
+import sys
+import subprocess
+import os
+
+# --- Auto-Installation Logic ---
+def install_package(package_name, import_name=None):
+    if import_name is None:
+        import_name = package_name
+    
+    if importlib.util.find_spec(import_name) is None:
+        print(f">> Seb Nodes: Installing missing requirement '{package_name}'...")
+        try:
+            # sys.executable finds the hidden Python automatically
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', package_name])
+            print(f">> Seb Nodes: '{package_name}' installed successfully.")
+        except Exception as e:
+            print(f">> Seb Nodes: Failed to install '{package_name}'. Error: {e}")
+
+# List of requirements to check
+requirements = [
+    ("matplotlib", "matplotlib"),
+    ("opencv-python", "cv2"),
+    ("transforms3d", "transforms3d"),
+    ("networkx", "networkx"),
+    ("scikit-image", "skimage")
+]
+
+for package, import_name in requirements:
+    install_package(package, import_name)
+# -------------------------------
 
 # Import all node classes
 from .switch_masks_seb import SwitchMasksSeb 
@@ -28,11 +58,8 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "DepthInpaintSeb": "Depth Inpaint (Seb)" 
 }
 
-# This tells ComfyUI to look for JS files in a 'js' sub-folder
 WEB_DIRECTORY = "./js" 
 
-# Standard boilerplate
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS', 'WEB_DIRECTORY']
 
-# Update the confirmation message
 print(">> Seb's Custom Nodes (seb_nodes): Loaded SwitchMasks, SaveImage, AspectRatio, UnifiedPrompter, Switch & DepthInpaint <<")
