@@ -1,7 +1,10 @@
 import torch
 import torch.nn as nn
 import numpy as np
-import matplotlib.pyplot as plt
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    plt = None
 import torch.nn.functional as F
 
 
@@ -499,3 +502,4 @@ def spectral_norm(module, mode=True):
         return nn.utils.spectral_norm(module)
 
     return module
+
