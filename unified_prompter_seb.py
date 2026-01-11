@@ -50,6 +50,7 @@ class UnifiedPrompterSeb:
         required_inputs = {
             "clip": ("CLIP", ),
             "main_prompt": ("STRING", {"multiline": True, "default": "a beautiful landscape"}),
+            "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
         }
         
         # Dynamically create the UI inputs
@@ -75,9 +76,13 @@ class UnifiedPrompterSeb:
     FUNCTION = "generate_conditioning"
     CATEGORY = "utils/prompting"
 
-    def generate_conditioning(self, clip, main_prompt, base_negative_prompt, log_prompts, **kwargs):
+    def generate_conditioning(self, clip, main_prompt, seed, log_prompts, base_negative_prompt, **kwargs):
         
         # --- 1. Assemble Positive Prompt ---
+        # Initialize a local random instance anchored to the seed for reproducibility
+        # This also ensures the node re-executes when the seed changes.
+        rng = random.Random(seed)
+        
         positive_parts = [main_prompt]
         
         if log_prompts:
@@ -100,8 +105,8 @@ class UnifiedPrompterSeb:
                 valid_choices = [item for item in valid_choices if item != "None"]
                 
                 if valid_choices:
-                    # Pick a random item from the filtered list
-                    final_selection = random.choice(valid_choices)
+                    # Pick a random item from the filtered list using our local RNG
+                    final_selection = rng.choice(valid_choices)
                     if log_prompts:
                         print(f"Randomized '{category}': {final_selection}")
             
