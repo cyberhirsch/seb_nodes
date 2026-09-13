@@ -37,6 +37,8 @@ from .aspect_ratio_seb import AspectRatioSeb
 from .unified_prompter_seb import UnifiedPrompterSeb
 from .switch_seb import SwitchSeb
 from .depth_inpaint_seb import DepthInpaintSeb
+from .threesixty_seb import Read360Seb, Write360Seb, PanoState360Seb, PanoSweep360Seb
+from .load_images_folder_seb import LoadImagesFromFolderSeb
 
 # Map the internal class names to the classes themselves
 NODE_CLASS_MAPPINGS = {
@@ -45,7 +47,12 @@ NODE_CLASS_MAPPINGS = {
     "AspectRatioSeb": AspectRatioSeb,
     "UnifiedPrompterSeb": UnifiedPrompterSeb,
     "SwitchSeb": SwitchSeb,
-    "DepthInpaintSeb": DepthInpaintSeb
+    "DepthInpaintSeb": DepthInpaintSeb,
+    "Read360Seb": Read360Seb,
+    "Write360Seb": Write360Seb,
+    "PanoState360Seb": PanoState360Seb,
+    "PanoSweep360Seb": PanoSweep360Seb,
+    "LoadImagesFromFolderSeb": LoadImagesFromFolderSeb
 }
 
 # Map the internal class names to the names in the UI
@@ -55,11 +62,16 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "AspectRatioSeb": "Aspect Ratio (Seb)",
     "UnifiedPrompterSeb": "Unified Prompter (Seb)",
     "SwitchSeb": "Switch (Seb)",
-    "DepthInpaintSeb": "Depth Inpaint (Seb)" 
+    "DepthInpaintSeb": "Depth Inpaint (Seb)",
+    "Read360Seb": "Read 360 (Seb)",
+    "Write360Seb": "Write 360 (Seb)",
+    "PanoState360Seb": "Pano State to Camera (Seb)",
+    "PanoSweep360Seb": "Pano Sweep (Seb)",
+    "LoadImagesFromFolderSeb": "Load Images From Folder (Seb)"
 }
 
 WEB_DIRECTORY = "./js" 
 
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS', 'WEB_DIRECTORY']
 
-print(">> Seb's Custom Nodes (seb_nodes): Loaded SwitchMasks, SaveImage, AspectRatio, UnifiedPrompter, Switch & DepthInpaint <<")
+print(">> Seb's Custom Nodes (seb_nodes): Loaded SwitchMasks, SaveImage, AspectRatio, UnifiedPrompter, Switch, DepthInpaint, LoadImagesFromFolder & 360 Tools <<")
