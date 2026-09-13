@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.bak
+*.orig
+tests/_*.png
+comfyui_custom_nodes_documentation.txt
